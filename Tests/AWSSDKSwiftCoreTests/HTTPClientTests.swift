@@ -55,18 +55,22 @@ class HTTPClientTests: XCTestCase {
     }
 
     func testConnectSimpleGet() {
-        let url = URL(string: "https://kinesis.us-west-2.amazonaws.com/")!
-        let client = HTTPClient(hostname: url.host!, port: 443)
-        let head = HTTPRequestHead(
-                     version: HTTPVersion(major: 1, minor: 1),
-                     method: .GET,
-                     uri: url.path
-                   )
-        let request = Request(head: head, body: Data())
-        let future = client.connect(request)
-        future.whenSuccess { response in }
-        future.whenFailure { error in }
-        future.whenComplete { }
+        do {
+            let url = URL(string: "https://kinesis.us-west-2.amazonaws.com/")!
+            let client = HTTPClient(hostname: url.host!, port: 443)
+            let head = HTTPRequestHead(
+                         version: HTTPVersion(major: 1, minor: 1),
+                         method: .GET,
+                         uri: url.path
+                       )
+            let request = Request(head: head, body: Data())
+            let future = try client.connect(request)
+            future.whenSuccess { response in }
+            future.whenFailure { error in }
+            future.whenComplete { _ in }
+        } catch {
+            XCTFail("Should not throw error")
+        }
 
         do {
             _ = try HTTPClient(url: URL(string: "http://169.254.169.254/latest/meta-data/iam/security-credentials/")!)
@@ -76,7 +80,6 @@ class HTTPClientTests: XCTestCase {
     }
 
     func testConnectGet() {
-
         let url = URL(string: "https://kinesis.us-west-2.amazonaws.com/")!
         let client = HTTPClient(hostname: url.host!, port: 443)
         let head = HTTPRequestHead(
@@ -88,7 +91,7 @@ class HTTPClientTests: XCTestCase {
         let future = client.connect(request)
         future.whenSuccess { response in }
         future.whenFailure { error in }
-        future.whenComplete { }
+        future.whenComplete { _ in }
 
         do {
             _ = try HTTPClient(url: URL(string: "http://169.254.169.254/latest/meta-data/iam/security-credentials/")!)
@@ -98,18 +101,22 @@ class HTTPClientTests: XCTestCase {
     }
 
     func testConnectPost() {
-        let url = URL(string: "https://kinesis.us-west-2.amazonaws.com/")!
-        let client = HTTPClient(hostname: url.host!, port: 443)
-        let head = HTTPRequestHead(
-                     version: HTTPVersion(major: 1, minor: 1),
-                     method: .GET,
-                     uri: url.path
-                   )
-        let request = Request(head: head, body: Data())
-        let future = client.connect(request)
-        future.whenSuccess { response in }
-        future.whenFailure { error in }
-        future.whenComplete { }
+        do {
+            let url = URL(string: "https://kinesis.us-west-2.amazonaws.com/")!
+            let client = HTTPClient(hostname: url.host!, port: 443)
+            let head = HTTPRequestHead(
+                         version: HTTPVersion(major: 1, minor: 1),
+                         method: .GET,
+                         uri: url.path
+                       )
+            let request = Request(head: head, body: Data())
+            let future = try client.connect(request)
+            future.whenSuccess { response in }
+            future.whenFailure { error in }
+            future.whenComplete { _ in }
+        } catch {
+          XCTFail("Should not throw error")
+        }
 
         do {
             _ = try HTTPClient(url: URL(string: "http://169.254.169.254/latest/meta-data/iam/security-credentials/")!)
